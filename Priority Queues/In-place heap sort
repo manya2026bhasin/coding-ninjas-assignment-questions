@@ -1,79 +1,77 @@
+/*Code : In-place heap sort
+
+Given an integer array of size N. Sort this array (in decreasing order) using heap sort.
+Note: Space complexity should be O(1).
+Input Format:
+The first line of input contains an integer, that denotes the value of the size of the array or N.
+The following line contains N space separated integers, that denote the value of the elements of the array.
+Output Format :
+The first and only line of output contains array elements after sorting. The elements of the array in the output are separated by single space.
+Constraints :
+1 <= n <= 10^6
+Time Limit: 1 sec
+Sample Input 1:
+6 
+2 6 8 5 4 3
+Sample Output 1:
+8 6 5 4 3 2
+*/
+
+
 #include<bits/stdc++.h>
+#include<queue>
+void heapSort(int arr[], int n) {
+    for(int i = 1; i < n; i++) {
 
-class PriorityQueue {
-    // Declare the data members here
-    vector<int> pq;
+        int childIndex = i;
+        while(childIndex > 0) {
+            int parentIndex = (childIndex - 1) / 2;
 
-   public:
-    PriorityQueue() {
-        // Implement the constructor here
-    }
-
-    /**************** Implement all the public functions here ***************/
-
-    void insert(int element) {
-        // Implement the insert() function here
-        pq.push_back(element);
-        int childindex=pq.size()-1;
-        while(childindex>0){
-            int parentindex=(childindex-1)/2;
-            if(pq[childindex]>pq[parentindex]){
-                int temp=pq[childindex];
-                pq[childindex]=pq[parentindex];
-                pq[parentindex]=temp;
+            if(arr[childIndex] < arr[parentIndex]) {
+                int temp = arr[childIndex];
+                arr[childIndex] = arr[parentIndex];
+                arr[parentIndex] = temp;
             }
-            else{
+            else {
                 break;
             }
-            childindex=parentindex;
+            childIndex = parentIndex;
         }
     }
 
-    int getMax() {
-        // Implement the getMax() function here
-        if(isEmpty()){
-            return INT_MIN;
-        }
-        return pq[0];
-    }
+    // Remove elements
 
-    int removeMax() {
-        // Implement the removeMax() function here
-        int ans=pq[0];
-        pq[0]=pq[pq.size()-1];
-        pq.pop_back();
-        int parentindex=0;
-        int leftchildindex=2*parentindex+1;
-        int rightchildindex=2*parentindex+2;
-        while(leftchildindex<pq.size()){
-            int maxindex=parentindex;
-            if(pq[maxindex]<pq[leftchildindex]){
-                maxindex=leftchildindex;
+    int size = n;
+
+    while(size > 1) {
+        int temp = arr[0];
+        arr[0] = arr[size - 1];
+        arr[size-1] = temp;
+
+        size--;
+
+        int parentIndex = 0;
+        int leftChildIndex = 2 * parentIndex + 1;
+        int rightChildIndx = 2 * parentIndex + 2;
+
+        while(leftChildIndex < size) {
+            int minIndex = parentIndex;
+            if(arr[minIndex] > arr[leftChildIndex]) {
+                minIndex = leftChildIndex;
             }
-            if(rightchildindex<pq.size()&&pq[maxindex]<pq[rightchildindex]){
-                maxindex=rightchildindex;
+            if(rightChildIndx < size && arr[rightChildIndx] < arr[minIndex]) {
+                minIndex = rightChildIndx;
             }
-            if(maxindex==parentindex){
+            if(minIndex == parentIndex) {
                 break;
             }
-            int temp=pq[maxindex];
-            pq[maxindex]=pq[parentindex];
-            pq[parentindex]=temp;
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[parentIndex];
+            arr[parentIndex] = temp;
 
-            parentindex=maxindex;
-            leftchildindex=2*parentindex+1;
-            rightchildindex=2*parentindex+2;
+            parentIndex = minIndex;
+            leftChildIndex = 2 * parentIndex + 1;
+            rightChildIndx = 2 * parentIndex + 2;
         }
-        return ans;
     }
-
-    int getSize() { 
-        // Implement the getSize() function here
-        return pq.size();
-    }
-
-    bool isEmpty() {
-        // Implement the isEmpty() function here
-        return pq.size()==0;
-    }
-};
+}
