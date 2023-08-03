@@ -1,3 +1,9 @@
+/*Code : Remove Min
+
+Implement the function RemoveMin for the min priority queue class.
+For a minimum priority queue, write the function for removing the minimum element present. Remove and return the minimum element.
+*/
+
 #include <vector>
 
 class PriorityQueue {
